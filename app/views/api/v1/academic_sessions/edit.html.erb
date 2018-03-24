@@ -1,0 +1,76 @@
+<%= content_for :title, "Edit Academic Session - #{@academic_session.start_date}" %>
+
+<%= render 'api/v1/shared/header/header', user: current_user %>
+
+<main role="main">
+  <div class="container">
+    <div class="py-5">
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+          <h1 class="h3">Edit Academic Session</h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">Import</button>
+              <button class="btn btn-sm btn-outline-secondary">Export</button>
+            </div>
+
+            <%= link_to 'Add academic session', new_staff_academic_session_path(current_user), class: 'btn btn-sm btn-outline-secondary',
+                                                                                               role: 'button' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 order-md-2 mb-4"></div>
+      <div class="col-md-8 order-md-1">
+        <!--<h4 class="mb-3">Edit Department</h4>-->
+
+        <%= render 'api/v1/shared/notifications/notice_alerts', notice: notice %>
+
+        <%= render 'api/v1/shared/notifications/form_errors', model: @academic_session %>
+
+        <%= form_for @academic_session, url: { action: 'update'} do |f|  %>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :term %>
+                <%= f.select(:term, TERM, {include_blank: 'Choose a term...'}, {class: 'custom-select d-block w-100', required: true }) %>
+              </div>
+              <div class="col-md-6 mb-3">
+                <%= f.label :year %>
+                <%= f.select(:year,  YEAR, {include_blank: 'Choose a year...'}, {class: 'custom-select d-block w-100' }) %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :start_date %>
+                <%= f.date_field :start_date, class: 'form-control', required: true %>
+              </div>
+              <div class="col-md-6 mb-3">
+                <%= f.label :end_date %>
+                <%= f.date_field :end_date, class: 'form-control', required: true %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="custom-control custom-checkbox">
+                  <%= f.check_box :closed, class: 'custom-control-input' %>
+                  <%= f.label :closed, class: 'custom-control-label' %>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.submit :Update, class: 'btn btn-primary' %>
+              </div>
+            </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</main>
+

@@ -1,0 +1,18 @@
+<ul class="list-group">
+  <% departments.each do |department| %>
+      <li class="list-group-item d-flex justify-content-between lh-condensed">
+        <div>
+          <h6 class="my-0">
+            <%= link_to department.name, department_path(department) %>
+          </h6>
+          <small class="text-muted">
+            <%= link_to 'Edit', edit_department_path(department), class: 'text-muted' %> |
+            <%= link_to 'Delete', department, method: :delete,
+                                              data: { confirm: "Are you sure you want to completely delete this department?" },
+                                              class: 'text-muted' %>
+          </small>
+        </div>
+        <span class="text-muted"><%= initials(department.admin) %></span>
+      </li>
+  <% end %>
+</ul>

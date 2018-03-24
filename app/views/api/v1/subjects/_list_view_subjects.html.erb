@@ -1,0 +1,16 @@
+<ul class="list-group">
+  <% subjects.each do |subject| %>
+      <li class="list-group-item d-flex justify-content-between lh-condensed">
+        <div>
+          <h6 class="my-0"><%= subject.name %></h6>
+          <small class="text-muted">
+            <%= link_to 'Edit', edit_subject_path(subject), class: 'text-muted' %> |
+            <%= link_to 'Delete', subject, method: :delete,
+                        data: { confirm: delete_message('subject', 'e.g: Scores.') },
+                        class: 'text-muted' %>
+          </small>
+        </div>
+        <span class="text-muted"><%= initials(subject.admin) %></span>
+      </li>
+  <% end %>
+</ul>

@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_11_211136) do
+ActiveRecord::Schema.define(version: 2018_03_21_145647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "academic_sessions", force: :cascade do |t|
+    t.string "term"
+    t.string "year"
+    t.date "start_date"
+    t.date "end_date"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "closed", default: false
+    t.index ["user_id"], name: "index_academic_sessions_on_user_id"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -74,7 +86,29 @@ ActiveRecord::Schema.define(version: 2018_03_11_211136) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_departments_on_name", unique: true
     t.index ["user_id"], name: "index_departments_on_user_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "scores", force: :cascade do |t|
+    t.bigint "subject_id"
+    t.bigint "student_id"
+    t.bigint "user_id"
+    t.bigint "academic_session_id"
+    t.decimal "class_scores", default: "0.0"
+    t.decimal "exam_scores", default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["academic_session_id"], name: "index_scores_on_academic_session_id"
+    t.index ["student_id"], name: "index_scores_on_student_id"
+    t.index ["subject_id"], name: "index_scores_on_subject_id"
+    t.index ["user_id"], name: "index_scores_on_user_id"
   end
 
   create_table "student_subjects", force: :cascade do |t|
@@ -121,6 +155,7 @@ ActiveRecord::Schema.define(version: 2018_03_11_211136) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_subjects_on_name", unique: true
     t.index ["user_id"], name: "index_subjects_on_user_id"
   end
 
@@ -147,15 +182,17 @@ ActiveRecord::Schema.define(version: 2018_03_11_211136) do
     t.string "last_name"
     t.string "gender"
     t.string "phone"
-    t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.bigint "role_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["user_id"], name: "index_users_on_user_id"
   end
 
+  add_foreign_key "academic_sessions", "users"
   add_foreign_key "class_rooms", "departments"
   add_foreign_key "class_rooms", "users"
   add_foreign_key "department_subjects", "departments"
@@ -164,6 +201,10 @@ ActiveRecord::Schema.define(version: 2018_03_11_211136) do
   add_foreign_key "department_teachers", "departments"
   add_foreign_key "department_teachers", "users"
   add_foreign_key "departments", "users"
+  add_foreign_key "scores", "academic_sessions"
+  add_foreign_key "scores", "students"
+  add_foreign_key "scores", "subjects"
+  add_foreign_key "scores", "users"
   add_foreign_key "student_subjects", "students"
   add_foreign_key "student_subjects", "subjects"
   add_foreign_key "student_subjects", "users"
@@ -174,5 +215,6 @@ ActiveRecord::Schema.define(version: 2018_03_11_211136) do
   add_foreign_key "subject_teachers", "users"
   add_foreign_key "subjects", "users"
   add_foreign_key "teachers", "users"
+  add_foreign_key "users", "roles"
   add_foreign_key "users", "users"
 end

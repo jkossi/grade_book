@@ -12,8 +12,14 @@ class ClassRoom < ApplicationRecord
   has_many :students
 
   # VALIDATIONS
-  validates :teacher_id, uniqueness: true
+  validates :teacher_id, uniqueness: { message: 'already assigned to a class' }
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
 
+
+  # SCOPES
+  def self.total_classrooms
+    count(:id)
+  end
 
 
 end

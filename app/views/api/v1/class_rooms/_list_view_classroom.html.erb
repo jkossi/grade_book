@@ -1,0 +1,18 @@
+<ul class="list-group">
+  <% classrooms.each do |classroom| %>
+      <li class="list-group-item d-flex justify-content-between lh-condensed">
+        <div>
+          <h6 class="my-0"><%= classroom.name %></h6>
+          <span class="text-muted"><%= classroom.teacher.user.full_name %></span>
+        </div>
+        <span class="text-muted"><%= initials(classroom.user) %></span>
+        <small class="text-muted">
+          <%= link_to 'Edit', '', class: 'text-muted' %> |
+          <%= link_to 'Delete', '', method: :delete,
+                      data: { confirm: delete_message('class', 'e.g: Students.') },
+                      class: 'text-muted' %>
+        </small>
+
+      </li>
+  <% end %>
+</ul>

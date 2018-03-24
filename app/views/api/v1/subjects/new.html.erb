@@ -1,0 +1,46 @@
+<%= content_for :title, 'Add New Subject' %>
+
+<%= render 'api/v1/shared/header/header', user: current_user  %>
+
+
+<main role="main">
+  <div class="container">
+    <div class="py-5">
+    </div>
+
+    <div class="row">
+      <div class="col-md-5 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Subjects</span>
+          <span class="badge badge-secondary badge-pill"><%= count_subjects %></span>
+        </h4>
+
+        <% if subjects.present? %>
+            <%= render 'api/v1/subjects/list_view_subjects', subjects: subjects %>
+        <% end %>
+      </div>
+
+      <div class="col-md-7 order-md-1">
+        <h4 class="mb-3">Add Subjects</h4>
+        <%= render 'api/v1/shared/notifications/notice_alerts', notice: notice, alert: alert %>
+
+        <%= render 'api/v1/shared/notifications/form_errors', model: @subject %>
+
+        <%= form_for @subject, url: {action: 'create'} do |f| %>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :name, 'Subject Name' %>
+                <%= f.text_field :name, class: 'form-control', placeholder: 'e.g: English', required: true %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.submit :Save, class: 'btn btn-primary' %>
+              </div>
+            </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</main>

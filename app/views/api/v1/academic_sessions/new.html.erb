@@ -1,0 +1,63 @@
+<% require 'constants' %>
+<%= content_for :title, 'Add Academic Sessions' %>
+
+<%= render 'api/v1/shared/header/header', user: current_user %>
+
+<main role="main">
+  <div class="container">
+    <div class="py-5">
+      <!--<h2>Add Departments</h2>-->
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Academic Sessions</span>
+          <span class="badge badge-secondary badge-pill"><%= total_academic_sessions %></span>
+        </h4>
+
+        <% if academic_sessions.present? %>
+            <%= render 'api/v1/academic_sessions/list_view_academic_sessions', academic_sessions: academic_sessions %>
+        <% end %>
+
+      </div>
+      <div class="col-md-8 order-md-1">
+        <h4 class="mb-3">Add Academic Session</h4>
+
+        <%= render 'api/v1/shared/notifications/notice_alerts', notice: notice, alert: alert %>
+
+        <%= render 'api/v1/shared/notifications/form_errors', model: @academic_session %>
+
+        <%= form_for @academic_session, url: { action: 'create' } do |f|  %>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :term %>
+                <%= f.select(:term, TERM, {include_blank: 'Choose a term...'}, {class: 'custom-select d-block w-100', required: true }) %>
+              </div>
+              <div class="col-md-6 mb-3">
+                <%= f.label :year %>
+                <%= f.select(:year,  YEAR, {include_blank: 'Choose a year...'}, {class: 'custom-select d-block w-100' }) %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :start_date %>
+                <%= f.date_field :start_date, class: 'form-control', required: true %>
+              </div>
+              <div class="col-md-6 mb-3">
+                <%= f.label :end_date %>
+                <%= f.date_field :end_date, class: 'form-control', required: true %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.submit :Save, class: 'btn btn-primary' %>
+              </div>
+            </div>
+        <% end %>
+      </div>
+
+    </div>
+
+  </div>
+</main>

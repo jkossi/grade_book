@@ -7,9 +7,14 @@ class User < ApplicationRecord
   # VAIDATIONS
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :role, presence: true
 
   # ASSOCIATIONS
+  # An admin user can creates many department
+  has_many :new_departments, class_name: 'Department'
+
+  # User belongs to a role
+  belongs_to :role
+
   # A user who has a role as a teacher can be a class teacher
   # This is used to know the class teachers
   has_one :teacher, dependent: :destroy
@@ -18,11 +23,10 @@ class User < ApplicationRecord
   has_many :students, -> { where role: 'admin' }
 
   # An admin can create at least one unique classroom
-  has_many :class_rooms,
-           -> { where role: 'admin' }
+  has_many :class_rooms
 
   # For Administrator can create many teachers
-  has_many :teachers, class_name: 'User',
+  has_many :staffs, class_name: 'User',
                       foreign_key: 'user_id',
                       dependent: :destroy
 
@@ -33,7 +37,10 @@ class User < ApplicationRecord
   has_many :student_subjects
 
   # Every teacher is created by an Administrator
-  belongs_to :admin, class_name: 'User'
+  belongs_to :admin, class_name: 'User',
+                     foreign_key: 'user_id',
+                     optional: true
+
 
   # For departments and teachers
   has_many :department_teachers
@@ -46,6 +53,23 @@ class User < ApplicationRecord
   # An Admin can create many subjects
   has_many :subjects, dependent: :destroy
 
+  # An Admin can creates many academic_sessions
+  has_many :academic_sessions
+
+  # An admin or teacher can create many scores
+  has_many :scores, dependent: :destroy
+
   # A teacher can teach at least one subject
   # has_many :assigned_subjects, class_name: 'Subject', foreign_key: 'user_id'
+
+  # SCOPES
+  def self.total_staffs
+    count(:id)
+  end
+
+  # PUBLIC INSTANCE METHODS
+  def full_name
+    "#{self.first_name.capitalize} #{self.last_name.capitalize}"
+  end
+
 end

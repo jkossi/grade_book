@@ -1,0 +1,63 @@
+<%= content_for :title, 'Add New Class' %>
+
+<%= render 'api/v1/shared/header/header', user: current_user  %>
+
+
+<main role="main">
+  <div class="container">
+    <div class="py-5">
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Classes</span>
+          <span class="badge badge-secondary badge-pill"><%= count_classroom %></span>
+        </h4>
+
+        <% if classrooms.present? %>
+            <%= render 'api/v1/class_rooms/list_view_classroom', classrooms: classrooms %>
+        <% end %>
+      </div>
+
+      <div class="col-md-6 order-md-1">
+        <h4 class="mb-3">Add Class</h4>
+        <%= render 'api/v1/shared/notifications/notice_alerts', notice: notice, alert: alert %>
+
+        <%= render 'api/v1/shared/notifications/form_errors', model: @classroom %>
+
+        <%= form_for @classroom, url: {action: 'create_classrooms'} do |f| %>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :name, 'Class Name' %>
+                <%= f.text_field :name, class: 'form-control', placeholder: 'e.g: Pry 1', required: true %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :teacher_id, 'Class Teacher' %>
+                <%= f.collection_select :teacher_id, User.select(:id, :first_name, :last_name).order('first_name asc'), :id, :full_name,
+                                                    {include_blank: 'Choose a staff'},
+                                                    {class: 'custom-select d-block w-100', required: true} %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :department_id, 'Department' %>
+                <%= f.collection_select :department_id, Department.select(:id, :name).order('name asc'), :id, :name,
+                                                        {include_blank: 'Choose a department'},
+                                                        {class: 'custom-select d-block w-100', required: true}
+                                                        %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.submit :Save, class: 'btn btn-primary' %>
+              </div>
+            </div>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</main>

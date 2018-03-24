@@ -1,0 +1,46 @@
+<% require 'constants' %>
+<%= content_for :title, 'Staffs' %>
+<%= render 'api/v1/shared/header/header', user: current_user %>
+
+<main role="main" >
+  <div class="container">
+    <div class="py-5">
+    </div>
+
+    <div class="row">
+
+      <!-- NOTIFICATION DISPLAY GOES HERE -->
+      <div class="col-sm-12">
+        <%= render 'api/v1/shared/notifications/notice_alerts', notice: notice, alert: alert %>
+      </div>
+
+
+      <div class="col-sm-12">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+          <h1 class="h3">Staffs (<%= @users.count %>)</h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">Import</button>
+              <button class="btn btn-sm btn-outline-secondary">Export</button>
+            </div>
+
+            <%= link_to 'Add Staff', new_staff_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <% if @users.present? %>
+          <%= render 'api/v1/staffs/table_view_staffs', staffs: @users %>
+        <% else %>
+          <div class="alert alert-info">No staffs found</div>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</main>
+

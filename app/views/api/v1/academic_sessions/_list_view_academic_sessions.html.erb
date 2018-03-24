@@ -1,0 +1,15 @@
+<ul class="list-group">
+  <% academic_sessions.each do |session| %>
+      <li class="list-group-item d-flex justify-content-between lh-condensed">
+        <div>
+          <h6 class="my-0"><%= "#{session.start_date.year}/#{session.end_date.year}" %></h6>
+          <small class="text-muted">Term: <%= session.term %></small>
+        </div>
+
+        <span class="text-muted"><%= initials(session.user) %></span>
+
+        <%= link_to 'Edit', edit_academic_session_path(session), class: 'text-muted d-block' %>
+
+      </li>
+  <% end %>
+</ul>

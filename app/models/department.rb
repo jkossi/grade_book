@@ -6,7 +6,8 @@ class Department < ApplicationRecord
   has_many :class_rooms
 
   # An admin can create at least one department
-  belongs_to :admin, class_name: 'User'
+  belongs_to :admin, class_name: 'User',
+                     foreign_key: 'user_id'
 
   # A department have at least one department in
   # department_teachers table
@@ -25,5 +26,14 @@ class Department < ApplicationRecord
   # department_subjects table
   has_many :subjects, through: :department_subjects
 
+
+  # VALIDATIONS
+  validates :name, presence: true
+  validates :name, uniqueness: { case_sensitive: false }
+
+  # SCOPES
+  def self.total_departments
+    count(:id)
+  end
 
 end

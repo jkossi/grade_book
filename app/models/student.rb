@@ -10,8 +10,17 @@ class Student < ApplicationRecord
   has_many :student_subjects
   has_many :subjects, through: :student_subjects
 
+  # For students and scores
+  has_many :scores, dependent: :destroy
+
   # VALIDATIONS
   validates :first_name, presence: true
   validates :last_name, presence: true
 
+
+  # SCOPES
+  private
+  def self.total_students
+    count(:id)
+  end
 end
