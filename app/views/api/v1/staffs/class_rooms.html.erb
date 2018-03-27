@@ -1,5 +1,5 @@
 <% require 'constants' %>
-<%= content_for :title, 'Staffs' %>
+<%= content_for :title, 'Classes' %>
 <%= render 'api/v1/shared/header/header', user: current_user %>
 
 <main role="main" >
@@ -12,19 +12,24 @@
       <!-- NOTIFICATION DISPLAY GOES HERE -->
       <div class="col-sm-12">
         <%= render 'api/v1/shared/notifications/notice_alerts', notice: notice, alert: alert %>
+
+        <% if @classroom.present? %>
+          <%= render 'api/v1/shared/notifications/form_errors', model: @classroom %>
+        <% end %>
       </div>
 
 
       <div class="col-sm-12">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
-          <h1 class="h3">Staffs (<%= @users.count %>)</h1>
+          <h1 class="h3">Classes (<%= @classrooms.count %>)</h1>
           <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
               <button class="btn btn-sm btn-outline-secondary">Import</button>
               <button class="btn btn-sm btn-outline-secondary">Export</button>
             </div>
 
-            <%= link_to 'Add Staff', new_staff_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+            <%= link_to 'Add Class', new_classroom_staff_path(current_user), class: 'btn btn-sm btn-outline-secondary',
+                                                                             role: 'button' %>
 
           </div>
         </div>
@@ -33,10 +38,10 @@
 
     <div class="row">
       <div class="col-md-12">
-        <% if @users.present? %>
-          <%= render 'api/v1/staffs/table_view_staffs', staffs: @users %>
+        <% if @classrooms.present? %>
+            <%= render 'api/v1/class_rooms/table_view_classrooms', classrooms: @classrooms, current_user: current_user %>
         <% else %>
-          <div class="alert alert-info">No staffs found</div>
+            <div class="alert alert-info">No classes found</div>
         <% end %>
       </div>
     </div>

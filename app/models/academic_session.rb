@@ -1,7 +1,7 @@
 class AcademicSession < ApplicationRecord
   # ASSOCIATIONS
   belongs_to :user
-  has_many :scores, dependent: :destroy
+  has_many :scores, dependent: :restrict_with_error
 
   # VALIDATIONS
   validates :term, presence: true

@@ -20,15 +20,15 @@ class User < ApplicationRecord
   has_one :teacher, dependent: :destroy
 
   # An admin can create at least one students
-  has_many :students, -> { where role: 'admin' }
+  has_many :students, dependent: :restrict_with_error
 
   # An admin can create at least one unique classroom
   has_many :class_rooms
 
   # For Administrator can create many teachers
   has_many :staffs, class_name: 'User',
-                      foreign_key: 'user_id',
-                      dependent: :destroy
+                    foreign_key: 'user_id',
+                    dependent: :destroy
 
   # An admin can create at least one department
   # and subject relationships
@@ -70,6 +70,15 @@ class User < ApplicationRecord
   # PUBLIC INSTANCE METHODS
   def full_name
     "#{self.first_name.capitalize} #{self.last_name.capitalize}"
+  end
+
+  def get_teacher_classroom(teacher_id)
+    classroom =  ClassRoom.find_by_teacher_id(teacher_id)
+    classroom.nil? ? nil : classroom.id
+  end
+
+  def is_class_teacher?(user_id)
+    Teacher.exists?(user_id)
   end
 
 end

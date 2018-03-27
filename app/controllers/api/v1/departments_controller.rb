@@ -54,7 +54,8 @@ module Api::V1
       if @department.destroy
         redirect_to new_staff_department_url(current_user), notice: "#{@department.name} is deleted successfully"
       else
-        render 'api/v1/departments/new'
+        redirect_to new_staff_department_url(current_user), alert: @department.errors.full_messages.join("\n")
+        # render 'api/v1/departments/new'
       end
     end
 

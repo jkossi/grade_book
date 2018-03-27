@@ -1,7 +1,7 @@
 class Student < ApplicationRecord
   # ASSOCIATIONS
   belongs_to :user, optional: true
-  belongs_to :teacher, optional: true
+  belongs_to :teacher, -> { includes :user }, optional: true
   belongs_to :class_room
 
   belongs_to :department
@@ -11,7 +11,7 @@ class Student < ApplicationRecord
   has_many :subjects, through: :student_subjects
 
   # For students and scores
-  has_many :scores, dependent: :destroy
+  has_many :scores, dependent: :restrict_with_error
 
   # VALIDATIONS
   validates :first_name, presence: true
@@ -19,8 +19,18 @@ class Student < ApplicationRecord
 
 
   # SCOPES
-  private
-  def self.total_students
-    count(:id)
+  def self.all_students(class_room_id)
+    where('class_room_id = ?', class_room_id)
   end
+
+
+
+
+  # SCOPES
+  private
+    def self.total_students
+      count(:id)
+    end
+
+
 end

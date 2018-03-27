@@ -21,26 +21,27 @@
       <div class="row">
 
         <!-- ADD STAFF -->
-        <div class="col-md-3">
-          <div class="card mb-4 box-shadow">
-            <div class="card-body">
-              <h5 class="card-title">
-                <%= link_to 'Add Staffs', new_staff_path %>
-              </h5>
-              <p class="card-text">Add your teaching staffs</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <%= link_to 'View', staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
-                  <%= link_to 'Edit', staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+        <% if is_admin?(current_user) %>
+          <div class="col-md-3">
+            <div class="card mb-4 box-shadow">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= link_to 'Add Staffs', new_staff_path %>
+                </h5>
+                <p class="card-text">Add your teaching staffs</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <%= link_to 'View', staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+                    <%= link_to 'Edit', staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+                  </div>
+                  <small class="text-muted"><%= total_staffs %></small>
                 </div>
-                <small class="text-muted"><%= total_staffs %></small>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- ADD DEPARTMENT -->
-        <div class="col-md-3">
+          <!-- ADD DEPARTMENT -->
+          <div class="col-md-3">
           <div class="card mb-4 box-shadow">
             <div class="card-body">
               <h5 class="card-title">
@@ -49,7 +50,7 @@
               <p class="card-text">Add your departments </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <%= link_to 'View', '', class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+                  <%= link_to 'View', new_staff_department_path(current_user), class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
                   <%= link_to 'Edit', new_staff_department_path(current_user), class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
                 </div>
                 <small class="text-muted"><%= total_departments %></small>
@@ -58,8 +59,8 @@
           </div>
         </div>
 
-        <!-- ADD ACADEMIC SESSIONS -->
-        <div class="col-md-3">
+          <!-- ADD ACADEMIC SESSIONS -->
+          <div class="col-md-3">
           <div class="card mb-4 box-shadow">
             <div class="card-body">
               <h5 class="card-title">
@@ -77,8 +78,8 @@
           </div>
         </div>
 
-        <!-- ADD SUBJECTS -->
-        <div class="col-md-3">
+          <!-- ADD SUBJECTS -->
+          <div class="col-md-3">
           <div class="card mb-4 box-shadow">
             <div class="card-body">
               <h5 class="card-title">
@@ -96,27 +97,8 @@
           </div>
         </div>
 
-        <!-- ADD STUDENTS -->
-        <div class="col-md-3">
-          <div class="card mb-4 box-shadow">
-            <div class="card-body">
-              <h5 class="card-title">
-                <%= link_to 'Add Students' %>
-              </h5>
-              <p class="card-text">Add your students</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <%= link_to 'View', '', class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
-                  <%= link_to 'Edit', '', class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
-                </div>
-                <small class="text-muted"><%= total_students %></small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ADD CLASSES -->
-        <div class="col-md-3">
+          <!-- ADD CLASSES -->
+          <div class="col-md-3">
           <div class="card mb-4 box-shadow">
             <div class="card-body">
               <h5 class="card-title">
@@ -125,14 +107,37 @@
               <p class="card-text">Add your classes</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                  <%= link_to 'View', class_rooms_staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+                  <%= link_to 'Edit', class_rooms_staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
                 </div>
                 <small class="text-muted"><%= total_classrooms %></small>
               </div>
             </div>
           </div>
         </div>
+        <% end %>
+
+        <!-- ADD STUDENTS -->
+        <% if is_admin?(current_user) || teacher_exists?(current_user.id) %>
+          <div class="col-md-3">
+              <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <%= link_to 'Add Students', new_student_staff_path(current_user) %>
+                  </h5>
+                  <p class="card-text">Add your students</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <%= link_to 'View', students_staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+                      <%= link_to 'Edit', students_staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+                    </div>
+                    <small class="text-muted"><%= total_students %></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+        <% end %>
+
 
         <!-- ADD SCORE -->
         <div class="col-md-3">
@@ -153,7 +158,7 @@
           </div>
         </div>
 
-        <!-- ADD SCORE -->
+        <!-- GENERATE REPORTS -->
         <div class="col-md-3">
           <div class="card mb-4 box-shadow">
             <div class="card-body">

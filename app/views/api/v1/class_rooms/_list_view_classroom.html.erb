@@ -7,10 +7,11 @@
         </div>
         <span class="text-muted"><%= initials(classroom.user) %></span>
         <small class="text-muted">
-          <%= link_to 'Edit', '', class: 'text-muted' %> |
-          <%= link_to 'Delete', '', method: :delete,
-                      data: { confirm: delete_message('class', 'e.g: Students.') },
-                      class: 'text-muted' %>
+          <%= link_to 'Edit', "/staffs/edit_classroom/#{classroom.id}", class: 'text-muted' %> |
+          <%= link_to_if current_user.id === classroom.user_id, 'Delete', {controller: 'staffs', action: 'destroy_classroom', id: classroom.id},
+                                                                          method: :delete,
+                                                                          data: { confirm: delete_message('class', 'e.g: Students.') },
+                                                                          class: 'text-muted' %>
         </small>
 
       </li>

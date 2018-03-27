@@ -1,9 +1,9 @@
 class Department < ApplicationRecord
 
   # ASSOCIATIONS
-  has_many :students
+  has_many :students, dependent: :restrict_with_error
 
-  has_many :class_rooms
+  has_many :class_rooms, dependent: :restrict_with_error
 
   # An admin can create at least one department
   belongs_to :admin, class_name: 'User',

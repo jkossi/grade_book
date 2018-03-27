@@ -16,7 +16,7 @@
         </h4>
 
         <% if classrooms.present? %>
-            <%= render 'api/v1/class_rooms/list_view_classroom', classrooms: classrooms %>
+            <%= render 'api/v1/class_rooms/list_view_classroom', classrooms: classrooms, current_user: current_user %>
         <% end %>
       </div>
 

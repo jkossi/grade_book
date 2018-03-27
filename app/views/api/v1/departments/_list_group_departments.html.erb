@@ -7,7 +7,7 @@
           </h6>
           <small class="text-muted">
             <%= link_to 'Edit', edit_department_path(department), class: 'text-muted' %> |
-            <%= link_to 'Delete', department, method: :delete,
+            <%= link_to 'Delete', "/departments/#{department.id}", method: :delete,
                                               data: { confirm: "Are you sure you want to completely delete this department?" },
                                               class: 'text-muted' %>
           </small>

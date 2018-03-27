@@ -9,7 +9,7 @@ class ClassRoom < ApplicationRecord
 
   belongs_to :department
 
-  has_many :students
+  has_many :students, dependent: :restrict_with_error
 
   # VALIDATIONS
   validates :teacher_id, uniqueness: { message: 'already assigned to a class' }

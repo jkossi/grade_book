@@ -1,5 +1,5 @@
 <% require 'constants' %>
-<%= content_for :title, "Edit Staff - #{@user.first_name.capitalize}" %>
+<%= content_for :title, 'Edit Student' %>
 <%= render 'api/v1/shared/header/header', user: current_user %>
 
 <main role="main" >
@@ -10,14 +10,14 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-          <h1 class="h3">Edit Staff</h1>
+          <h1 class="h3">Edit Student</h1>
           <div class="btn-toolbar mb-2 mb-md-0">
             <!--<div class="btn-group mr-2">-->
             <!--<button class="btn btn-sm btn-outline-secondary">Share</button>-->
             <!--<button class="btn btn-sm btn-outline-secondary">Export</button>-->
             <!--</div>-->
 
-            <%= link_to 'View All', staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
+            <%= link_to 'View All', students_staffs_path, class: 'btn btn-sm btn-outline-secondary', role: 'button' %>
           </div>
         </div>
       </div>
@@ -28,18 +28,24 @@
       <div class="col-md-8 order-md-1">
         <%= render 'api/v1/shared/notifications/notice_alerts', notice: notice %>
 
-        <%= render 'api/v1/shared/notifications/form_errors', model: @user %>
+        <%= render 'api/v1/shared/notifications/form_errors', model: @student %>
 
-        <%= form_for @user, url: { action: 'update' } do |f| %>
+        <%= form_for @student, url: { action: 'update_student' } do |f| %>
             <div class="row">
-              <div class="col-md-6 mb-3">
+              <div class="col-md-4 mb-3">
                 <%= f.label :first_name, 'First name*' %>
                 <%= f.text_field :first_name, class: 'form-control',
                                  placeholder: 'First name',
                                  required: true  %>
               </div>
 
-              <div class="col-md-6 mb-3">
+              <div class="col-md-4 mb-3">
+                <%= f.label :middle_name, 'Middle name' %>
+                <%= f.text_field :middle_name, class: 'form-control',
+                                 placeholder: 'Middle name' %>
+              </div>
+
+              <div class="col-md-4 mb-3">
                 <%= f.label :last_name, 'Last name*' %>
                 <%= f.text_field :last_name, class: 'form-control',
                                  placeholder: 'Last name',
@@ -48,29 +54,14 @@
             </div>
 
             <div class="row">
-              <div class="col-md-12 mb-3">
-                <%= f.label :email, 'Email*' %>
-                <%= f.email_field :email, class: 'form-control',
-                                  placeholder: 'Email',
-                                  required: true  %>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-3 mb-3">
-                <%= f.label :role_id, 'Role*' %>
-                <%= f.collection_select :role_id,
-                                        Role.all.order('id desc'), :id, :name,
-                                        {include_blank: 'Choose role...'},
-                                        {class: 'custom-select d-block w-100', required: true} %>
-              </div>
-              <div class="col-md-3 mb-3">
+              <div class="col-md-4 mb-3">
                 <%= f.label :gender, 'Sex' %>
                 <%= f.select :gender, GENDER, {include_blank: 'Choose sex...'}, {class: 'custom-select d-block w-100'} %>
               </div>
-              <div class="col-md-6 mb-3">
-                <%= f.label :phone %>
-                <%= f.text_field :phone, class: 'form-control', placeholder: 'Phone nos' %>
+
+              <div class="col-md-4 mb-3">
+                <%= f.label :class_room_id, 'Class*' %>
+                <%= f.collection_select :class_room_id, ClassRoom.all, :id, :name, { prompt: true }, {class: 'custom-select d-block w-100', required: true}  %>
               </div>
             </div>
 

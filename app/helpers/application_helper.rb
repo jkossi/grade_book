@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def is_admin?(user)
-    user.role_id == 1
+    user.role_id === 1
   end
 
   def initials(user)
@@ -46,5 +46,32 @@ module ApplicationHelper
 
   def academic_session_status(closed)
     closed ? 'Closed' : 'Open'
+  end
+
+  def display_created_by(record, current_user)
+    if record.user_id.present?
+      if record.user_id === current_user.id
+        return 'ME'
+      end
+
+      if record.user_id != current_user.id
+        return initials(record.user)
+      end
+    end
+
+
+    if record.teacher_id.present?
+      if record.teacher_id == current_user.id
+        return 'ME'
+      end
+
+      if record.teacher_id != current_user.id
+        initials(record.teacher.user)
+      end
+    end
+  end
+
+  def is_teacher_or_admin?(record, current_user)
+    record.user_id === current_user.id || record.teacher_id === current_user.id
   end
 end

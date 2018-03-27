@@ -16,10 +16,19 @@ Rails.application.routes.draw do
         member do
           get 'new_classroom'
           post 'create_classrooms'
+          get 'new_student'
+          post 'create_students'
         end
 
         collection do
           get 'edit_classroom/:id', to: 'staffs#edit_classroom'
+          delete 'class_rooms/:id', to: 'staffs#destroy_classroom'
+          patch 'class_rooms/:id', to: 'staffs#update_classroom'
+          get 'class_rooms'
+          get 'students'
+          get 'edit_student/:id', to: 'staffs#edit_student'
+          delete 'students/:id', to: 'staffs#destroy_student'
+          patch 'students/:id', to: 'staffs#update_student'
         end
 
         resources :roles
